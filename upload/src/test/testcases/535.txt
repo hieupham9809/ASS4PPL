@@ -1,6 +1,6 @@
 
                     procedure main();
                     begin 
-                    putBool(true and then false);
+                    putBool(1 >= 2 and then 2 > 1);
                     end
                     

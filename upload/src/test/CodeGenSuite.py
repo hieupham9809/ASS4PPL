@@ -350,79 +350,132 @@ class CheckCodeGenSuite(unittest.TestCase):
     #                 """
     #     expect = "6"
     #     self.assertTrue(TestCodeGen.test(input,expect,529))
-    def test_with_stmt(self):
+    # def test_with_stmt(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 var x,y:integer;
+    #                 procedure main();
+    #                 var z: integer;
+    #                 begin 
+    #                 with a: integer; do 
+    #                     begin
+    #                         a := 1;
+    #                         putInt(a);
+    #                     end
+    #                 end
+    #                 """
+    #     expect = "1"
+    #     self.assertTrue(TestCodeGen.test(input,expect,530))
+    # def test_with_override_var_stmt(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 var x,y:integer;
+    #                 procedure main();
+    #                 var z: integer;
+    #                 begin 
+    #                 z := 1;
+    #                 with z: integer; do 
+    #                     begin
+    #                         z := 4;
+    #                         putInt(z);
+    #                     end
+    #                 end
+    #                 """
+    #     expect = "4"
+    #     self.assertTrue(TestCodeGen.test(input,expect,531))
+    # def test_with_for_stmt(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 var x,y:integer;
+    #                 procedure main();
+    #                 var z: integer;
+    #                 begin 
+    #                 z := 1;
+    #                 for x:=1 to 4 do
+    #                     begin
+    #                         with z: integer; do 
+    #                             begin
+    #                                 z := 4;
+    #                                 putInt(z);
+    #                             end
+    #                     end
+    #                 end
+    #                 """
+    #     expect = "4444"
+    #     self.assertTrue(TestCodeGen.test(input,expect,532))
+    # def test_andthen_op(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 procedure main();
+    #                 begin 
+    #                 putBool(true and then false);
+    #                 end
+    #                 """
+    #     expect = "false"
+    #     self.assertTrue(TestCodeGen.test(input,expect,533))
+    # def test_andthen_op_2(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 procedure main();
+    #                 begin 
+    #                 putBool(false and then true);
+    #                 end
+    #                 """
+    #     expect = "false"
+    #     self.assertTrue(TestCodeGen.test(input,expect,534))
+    # def test_andthen_op_complex(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 procedure main();
+    #                 begin 
+    #                 putBool(1 >= 2 and then 2 > 1);
+    #                 end
+    #                 """
+    #     expect = "false"
+    #     self.assertTrue(TestCodeGen.test(input,expect,535))
+    # def test_orelse_op(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 procedure main();
+    #                 begin 
+    #                 putBool(1 >= 0 or else 2 > 1);
+    #                 end
+    #                 """
+    #     expect = "true"
+    #     self.assertTrue(TestCodeGen.test(input,expect,536))
+    # def test_return_stmt(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 procedure foo();
+    #                 begin
+    #                     return 1;
+    #                 end
+    #                 procedure main();
+    #                 var x: integer;
+    #                 begin 
+    #                 foo();
+                
+    #                 end
+    #                 """
+    #     expect = ""
+    #     self.assertTrue(TestCodeGen.test(input,expect,537))
+    def test_function_return(self):
         """Simple program: int main() {} """
         input = """
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    with a: integer; do 
-                        begin
-                            a := 1;
-                            putInt(a);
-                        end
+                    function foo():real;
+                    begin
+                        return 2.5 + 1.5;
                     end
-                    """
-        expect = "1"
-        self.assertTrue(TestCodeGen.test(input,expect,530))
-    def test_with_override_var_stmt(self):
-        """Simple program: int main() {} """
-        input = """
-                    var x,y:integer;
                     procedure main();
-                    var z: integer;
+                    var x: real;
                     begin 
-                    z := 1;
-                    with z: integer; do 
-                        begin
-                            z := 4;
-                            putInt(z);
-                        end
+                    {x := 2;}
+                    x:= foo();
+                    putFloat(x);
                     end
                     """
         expect = "4"
-        self.assertTrue(TestCodeGen.test(input,expect,531))
-    def test_with_for_stmt(self):
-        """Simple program: int main() {} """
-        input = """
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    z := 1;
-                    for x:=1 to 4 do
-                        begin
-                            with z: integer; do 
-                                begin
-                                    z := 4;
-                                    putInt(z);
-                                end
-                        end
-                    end
-                    """
-        expect = "4444"
-        self.assertTrue(TestCodeGen.test(input,expect,532))
-    def test_with_for_stmt_2(self):
-        """Simple program: int main() {} """
-        input = """
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    z := 1;
-                    for x:=1 to 4 do
-                        begin
-                            with z: integer; do 
-                                begin
-                                    z := 4;
-                                    putIntLn(z);
-                                end
-                        end
-                    end
-                    """
-        expect = "4\n4\n4\n4\n"
-        self.assertTrue(TestCodeGen.test(input,expect,533))
+        self.assertTrue(TestCodeGen.test(input,expect,538))
     # def test_boolean(self):
     #     """Simple program: int main() {} """
     #     input = """

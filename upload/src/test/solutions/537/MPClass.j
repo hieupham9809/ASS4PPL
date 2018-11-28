@@ -2,23 +2,25 @@
 .class public MPClass
 .super java.lang.Object
 
-.method public static main([Ljava/lang/String;)V
-.var 0 is args [Ljava/lang/String; from Label0 to Label1
+.method public static foo()V
 Label0:
 	iconst_1
-	ifle Label2
-	iconst_0
-	ifle Label2
-	iconst_1
-	goto Label3
-Label2:
-	iconst_0
-Label3:
-	invokestatic io/putBool(Z)V
+	ireturn
 Label1:
 	return
-.limit stack 6
-.limit locals 1
+.limit stack 1
+.limit locals 0
+.end method
+
+.method public static main([Ljava/lang/String;)V
+.var 0 is args [Ljava/lang/String; from Label0 to Label1
+.var 1 is x I from Label0 to Label1
+Label0:
+	invokestatic MPClass/foo()V
+Label1:
+	return
+.limit stack 0
+.limit locals 2
 .end method
 
 .method public <init>()V

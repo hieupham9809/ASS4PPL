@@ -429,8 +429,36 @@ class CodeGenVisitor(BaseVisitor, Utils):
 
         [self.visit(stmt,subBodyCtxt) for stmt in ast.stmt]
 
+    def visitReturn(self,ast,o):
+        subBodyCtxt = o
+        frame = subBodyCtxt.frame
+        sym = subBodyCtxt.sym
+        expr = self.visit(ast.expr,Access(frame,sym,False,True))
+        print(expr[1])
+        if ast.expr:
+            self.emit.printout(expr[0])
+        self.emit.printout(self.emit.emitRETURN(expr[1],frame))
+    def visitCallExpr(self,ast,o):
+        #ast: CallStmt
+        #o: Any
+        result = list()
+        ctxt = o
+        frame = ctxt.frame
+        nenv = ctxt.sym
+        sym = self.lookup(ast.method.name, nenv, lambda x: x.name)
+        cname = sym.value.value
+    
+        ctype = sym.mtype
 
-
+        in_ = ("", list())
+        for x in ast.param:
+            str1, typ1 = self.visit(x, Access(frame, nenv, False, True))
+            in_ = (in_[0] + str1, in_[1].append(typ1))
+        result.append(in_[0])
+        result.append(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
+        #self.emit.printout(in_[0])
+        #self.emit.printout()
+        return ''.join(result),ctype.rettype
 
 
         #if type()

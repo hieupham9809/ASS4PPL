@@ -393,6 +393,38 @@ class Emitter():
     '''
     *   generate iand
     '''
+    def emitANDTHEN(self,frame,leftCode,rightCode):
+        falseLabel = frame.getNewLabel()
+        endLabel = frame.getNewLabel()
+        result = list()
+        #frame.pop()
+        result.append(leftCode)
+        result.append(self.emitIFFALSE(falseLabel,frame))
+        result.append(rightCode)
+        result.append(self.emitIFFALSE(falseLabel,frame))
+        result.append(self.emitPUSHICONST("true",frame))
+        result.append(self.emitGOTO(endLabel,frame))
+        result.append(self.emitLABEL(falseLabel,frame))
+        result.append(self.emitPUSHICONST("false",frame))
+        result.append(self.emitLABEL(endLabel,frame))
+        return ''.join(result)
+
+    def emitORELSE(self,frame,leftCode,rightCode):
+        trueLabel = frame.getNewLabel()
+        endLabel = frame.getNewLabel()
+        result = list()
+        #frame.pop()
+        result.append(leftCode)
+        result.append(self.emitIFTRUE(trueLabel,frame))
+        result.append(rightCode)
+        result.append(self.emitIFTRUE(trueLabel,frame))
+        result.append(self.emitPUSHICONST("false",frame))
+        result.append(self.emitGOTO(endLabel,frame))
+        result.append(self.emitLABEL(trueLabel,frame))
+        result.append(self.emitPUSHICONST("true",frame))
+        result.append(self.emitLABEL(endLabel,frame))
+        return ''.join(result)
+
 
     def emitANDOP(self, frame):
         #frame: Frame

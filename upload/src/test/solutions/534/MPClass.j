@@ -5,9 +5,9 @@
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
 Label0:
-	iconst_1
-	ifle Label2
 	iconst_0
+	ifle Label2
+	iconst_1
 	ifle Label2
 	iconst_1
 	goto Label3

@@ -1,0 +1,13 @@
+
+                    function foo():real;
+                    begin
+                        return 2.5 + 1.5;
+                    end
+                    procedure main();
+                    var x: real;
+                    begin 
+                    {x := 2;}
+                    x:= foo();
+                    putFloat(x);
+                    end
+                    
