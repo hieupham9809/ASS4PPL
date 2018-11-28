@@ -1,0 +1,7 @@
+
+                    var x:integer;
+                    procedure main();
+                    begin 
+                    x := 4;
+                    putInt(x);  end
+                    

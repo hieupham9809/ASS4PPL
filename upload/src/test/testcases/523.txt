@@ -1,0 +1,11 @@
+
+                    var x,y:integer;
+                    procedure main();
+                    var z: integer;
+                    begin 
+                    x := 1;
+                    while(x < 4)
+                    do x := x + 1;
+                    putInt(x); 
+                    end
+                    

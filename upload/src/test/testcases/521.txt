@@ -1,0 +1,11 @@
+
+                    var x,y:integer;
+                    procedure main();
+                    begin 
+                    x := 1;
+                    y := 2;
+                    if (false)
+                    then putInt(x);
+                    else putInt(y);  
+                    end
+                    

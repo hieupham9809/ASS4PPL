@@ -1,0 +1,4 @@
+var a,b:integer;
+                    procedure main();
+                    begin putInt(-1);  end
+                    

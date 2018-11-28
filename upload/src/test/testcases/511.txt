@@ -1,0 +1,4 @@
+var a,b:integer;
+                    procedure main();
+                    begin putFloat(1.5 - 1);  end
+                    

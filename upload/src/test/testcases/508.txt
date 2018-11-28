@@ -1,0 +1,4 @@
+var a,b:integer;
+                    procedure main();
+                    begin putInt(6 div 2);  end
+                    

@@ -1,0 +1,4 @@
+var y:integer;z:string;
+                    procedure main(); var x: real;
+                    begin putInt(5-3);  end
+                    

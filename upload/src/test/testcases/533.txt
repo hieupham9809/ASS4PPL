@@ -1,0 +1,16 @@
+
+                    var x,y:integer;
+                    procedure main();
+                    var z: integer;
+                    begin 
+                    z := 1;
+                    for x:=1 to 4 do
+                        begin
+                            with z: integer; do 
+                                begin
+                                    z := 4;
+                                    putIntLn(z);
+                                end
+                        end
+                    end
+                    

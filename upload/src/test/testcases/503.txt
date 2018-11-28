@@ -1,0 +1,7 @@
+
+                    procedure foo();
+                    begin end
+                    procedure main(); 
+                    var x: real;
+                    begin putInt(3);end
+                    

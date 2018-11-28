@@ -1,0 +1,14 @@
+
+                    var x,y:integer;
+                    procedure main();
+                    var z: integer;
+                    begin 
+                    z:=1;
+                    for x := 5 downto 1 do
+                        begin
+                         z := z + 1;
+                         {if (z = 3) then break;}
+                        end
+                    putInt(z); 
+                    end
+                    

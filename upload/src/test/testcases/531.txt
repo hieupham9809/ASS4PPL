@@ -1,0 +1,13 @@
+
+                    var x,y:integer;
+                    procedure main();
+                    var z: integer;
+                    begin 
+                    z := 1;
+                    with z: integer; do 
+                        begin
+                            z := 4;
+                            putInt(z);
+                        end
+                    end
+                    

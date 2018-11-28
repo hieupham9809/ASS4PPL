@@ -1,0 +1,7 @@
+
+                    var x:real;
+                    procedure main();
+                    begin 
+                    x := 5;
+                    putFloat(x);  end
+                    
