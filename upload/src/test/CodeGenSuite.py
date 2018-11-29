@@ -459,69 +459,80 @@ class CheckCodeGenSuite(unittest.TestCase):
     #                 """
     #     expect = ""
     #     self.assertTrue(TestCodeGen.test(input,expect,537))
-    def test_function_return_float(self):
+    # def test_function_return_float(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 function foo():real;
+    #                 begin
+    #                     return 2.3 + 1.3;
+    #                 end
+    #                 procedure main();
+    #                 var x: real;
+    #                 begin 
+    #                 {x := 2;}
+    #                 x:= foo();
+    #                 putFloat(x);
+    #                 end
+    #                 """
+    #     expect = "3.6"
+    #     self.assertTrue(TestCodeGen.test(input,expect,538))
+    # def test_function_return_float_int(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 function foo():real;
+    #                 begin
+    #                     return 1.3 + 2;
+    #                 end
+    #                 procedure main();
+    #                 var x: real;
+    #                 begin 
+    #                 {x := 2;}
+    #                 x:= foo();
+    #                 putFloat(x);
+    #                 end
+    #                 """
+    #     expect = "3.3"
+    #     self.assertTrue(TestCodeGen.test(input,expect,539))
+    # def test_string_type(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 procedure main();
+    #                 var x: string;
+    #                 begin 
+    #                 x := "abc";
+    #                 putString(x);
+    #                 end
+    #                 """
+    #     expect = "abc"
+    #     self.assertTrue(TestCodeGen.test(input,expect,540))
+    # def test_string_return(self):
+    #     """Simple program: int main() {} """
+    #     input = """
+    #                 var j: integer;                    
+    #                 function foo():string;
+    #                 begin
+    #                     return "hehe";
+    #                 end
+    #                 procedure main();
+    #                 var x: string;
+    #                 begin 
+    #                 j := 2;
+    #                 x:= foo();
+    #                 putString(x);
+    #                 end
+    #                 """
+    #     expect = "hehe"
+    #     self.assertTrue(TestCodeGen.test(input,expect,541))
+    def test_arrayDecl_global(self):
         """Simple program: int main() {} """
         input = """
-                    function foo():real;
-                    begin
-                        return 2.3 + 1.3;
-                    end
+                    var j: array[1 .. 3] of integer;
                     procedure main();
-                    var x: real;
                     begin 
-                    {x := 2;}
-                    x:= foo();
-                    putFloat(x);
                     end
                     """
-        expect = "3.6"
-        self.assertTrue(TestCodeGen.test(input,expect,538))
-    def test_function_return_float_int(self):
-        """Simple program: int main() {} """
-        input = """
-                    function foo():real;
-                    begin
-                        return 1.3 + 2;
-                    end
-                    procedure main();
-                    var x: real;
-                    begin 
-                    {x := 2;}
-                    x:= foo();
-                    putFloat(x);
-                    end
-                    """
-        expect = "3.3"
-        self.assertTrue(TestCodeGen.test(input,expect,539))
-    def test_string_type(self):
-        """Simple program: int main() {} """
-        input = """
-                    procedure main();
-                    var x: string;
-                    begin 
-                    x := "abc";
-                    putString(x);
-                    end
-                    """
-        expect = "abc"
-        self.assertTrue(TestCodeGen.test(input,expect,540))
-    def test_string_return(self):
-        """Simple program: int main() {} """
-        input = """
-                    function foo():string;
-                    begin
-                        return "hehe";
-                    end
-                    procedure main();
-                    var x: string;
-                    begin 
-                    {x := 2;}
-                    x:= foo();
-                    putString(x);
-                    end
-                    """
-        expect = "hehe"
-        self.assertTrue(TestCodeGen.test(input,expect,541))
+        expect = ""
+        self.assertTrue(TestCodeGen.test(input,expect,542))
     # def test_boolean(self):
     #     """Simple program: int main() {} """
     #     input = """

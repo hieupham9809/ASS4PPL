@@ -127,7 +127,7 @@ class CodeGenVisitor(BaseVisitor, Utils):
                 paramTypeList = [y.varType for y in x.param]
                 stDecl = [Symbol(x.name.name,MType(paramTypeList,x.returnType),CName(self.className))] + stDecl
             else:
-                newSym = self.visit(x,SubBody(None,None,isGlobal=True))
+                newSym = self.visit(x,SubBody(Frame("<clinit>",x.varType),list(),isGlobal=True))
                 stDecl = [newSym] + stDecl
         e = SubBody(None, stDecl)
         [self.visit(x, e) for x in ast.decl if type(x) is FuncDecl]
@@ -196,6 +196,8 @@ class CodeGenVisitor(BaseVisitor, Utils):
 
         if o.isGlobal:
             self.emit.printout(self.emit.emitATTRIBUTE(varName,varType,False,""))
+            if type(varType) == ArrayType:
+                self.visit(varType,(subctxt,varName))
             return Symbol(varName, varType)
         else:
             index = frame.getNewIndex()
@@ -464,4 +466,24 @@ class CodeGenVisitor(BaseVisitor, Utils):
         return ''.join(result),ctype.rettype
 
 
-        #if type()
+    def visitArrayType(self,ast,o):
+        lower = ast.lower
+        upper = ast.upper
+        arraySize = upper - lower + 1
+        eleType = ast.eleType
+
+        frame = o[0].frame
+        label1 = frame.getNewLabel()
+        label2 = frame.getNewLabel()
+        print(frame)
+        self.emit.printout(self.emit.emitLABEL(label1,frame))
+        self.emit.printout(self.emit.emitPUSHICONST(arraySize,frame))
+        self.emit.printout(self.emit.jvm.emitNEWARRAY(self.emit.getFullType(eleType)))
+        
+        self.emit.printout(self.emit.emitPUTSTATIC(self.className + "." + o[1],ast,frame))
+        self.emit.printout(self.emit.emitLABEL(label2,frame))
+
+    def visitArrayCell(self,ast,o):
+        
+        
+

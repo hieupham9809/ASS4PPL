@@ -1,31 +1,20 @@
 .source MPClass.java
 .class public MPClass
 .super java.lang.Object
-.field static j I
-
-.method public static foo()Ljava/lang/String;
+.field static j [I
 Label0:
-	ldc "hehe"
-	areturn
+	iconst_3
+	newarray int
+	putstatic MPClass.j [I
 Label1:
-.limit stack 1
-.limit locals 0
-.end method
 
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
-.var 1 is x Ljava/lang/String; from Label0 to Label1
 Label0:
-	iconst_2
-	putstatic MPClass.j I
-	invokestatic MPClass/foo()Ljava/lang/String;
-	astore_1
-	aload_1
-	invokestatic io/putString(Ljava/lang/String;)V
 Label1:
 	return
-.limit stack 1
-.limit locals 2
+.limit stack 0
+.limit locals 1
 .end method
 
 .method public <init>()V

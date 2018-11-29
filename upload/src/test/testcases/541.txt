@@ -1,4 +1,5 @@
 
+                    var j: integer;                    
                     function foo():string;
                     begin
                         return "hehe";
@@ -6,7 +7,7 @@
                     procedure main();
                     var x: string;
                     begin 
-                    {x := 2;}
+                    j := 2;
                     x:= foo();
                     putString(x);
                     end
