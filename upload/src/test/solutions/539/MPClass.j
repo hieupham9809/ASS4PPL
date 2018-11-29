@@ -4,8 +4,9 @@
 
 .method public static foo()F
 Label0:
-	ldc 2.3
 	ldc 1.3
+	iconst_2
+	i2f
 	fadd
 	freturn
 Label1:

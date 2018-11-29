@@ -222,7 +222,7 @@ class CodeGenVisitor(BaseVisitor, Utils):
                     rightCode = rightCode + self.emit.emitI2F(frame)
         else:
             mtype = FloatType()
-            if type(leftOpr) == IntType:
+            if type(leftType) == IntType:
                 leftCode = leftCode + self.emit.emitI2F(frame)
             else: 
                 rightCode = rightCode + self.emit.emitI2F(frame)
@@ -290,6 +290,11 @@ class CodeGenVisitor(BaseVisitor, Utils):
         frame = ctxt.frame
         return self.emit.emitPUSHICONST(str(ast.value).lower(), frame), BoolType()
     
+    def visitStringLiteral(self,ast,o):
+        ctxt = o
+        frame = ctxt.frame
+        return self.emit.emitPUSHCONST(ast.value,StringType(),frame), StringType()
+        
     
 ############## STATEMENT #######################
     def visitCallStmt(self, ast, o):
@@ -434,9 +439,9 @@ class CodeGenVisitor(BaseVisitor, Utils):
         frame = subBodyCtxt.frame
         sym = subBodyCtxt.sym
         expr = self.visit(ast.expr,Access(frame,sym,False,True))
-        print(expr[1])
         if ast.expr:
             self.emit.printout(expr[0])
+        
         self.emit.printout(self.emit.emitRETURN(expr[1],frame))
     def visitCallExpr(self,ast,o):
         #ast: CallStmt
@@ -456,8 +461,6 @@ class CodeGenVisitor(BaseVisitor, Utils):
             in_ = (in_[0] + str1, in_[1].append(typ1))
         result.append(in_[0])
         result.append(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
-        #self.emit.printout(in_[0])
-        #self.emit.printout()
         return ''.join(result),ctype.rettype
 
 

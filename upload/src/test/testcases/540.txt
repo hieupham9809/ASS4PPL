@@ -1,0 +1,8 @@
+
+                    procedure main();
+                    var x: string;
+                    begin 
+                    x := "abc";
+                    putString(x);
+                    end
+                    

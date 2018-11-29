@@ -92,7 +92,7 @@ class Emitter():
             return self.emitPUSHFCONST(in_, frame)
         elif type(typ) is StringType:
             frame.push()
-            return self.jvm.emitLDC(in_)
+            return self.jvm.emitLDC('"' + in_ + '"')
         else:
             raise IllegalOperandException(in_)
 
@@ -613,10 +613,15 @@ class Emitter():
     def emitRETURN(self, in_, frame):
         #in_: Type
         #frame: Frame
-
+        if type(in_) is StringType:
+            frame.pop()
+            return self.jvm.emitARETURN()
         if type(in_) is IntType:
             frame.pop()
             return self.jvm.emitIRETURN()
+        if type(in_) is FloatType:
+            frame.pop()
+            return self.jvm.emitFRETURN()
         elif type(in_) is VoidType:
             return self.jvm.emitRETURN()
 

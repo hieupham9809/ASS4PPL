@@ -2,25 +2,23 @@
 .class public MPClass
 .super java.lang.Object
 
-.method public static foo()F
+.method public static foo()Ljava/lang/String;
 Label0:
-	ldc 2.3
-	ldc 1.3
-	fadd
-	freturn
+	ldc "hehe"
+	areturn
 Label1:
-.limit stack 2
+.limit stack 1
 .limit locals 0
 .end method
 
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
-.var 1 is x F from Label0 to Label1
+.var 1 is x Ljava/lang/String; from Label0 to Label1
 Label0:
-	invokestatic MPClass/foo()F
-	fstore_1
-	fload_1
-	invokestatic io/putFloat(F)V
+	invokestatic MPClass/foo()Ljava/lang/String;
+	astore_1
+	aload_1
+	invokestatic io/putString(Ljava/lang/String;)V
 Label1:
 	return
 .limit stack 1
