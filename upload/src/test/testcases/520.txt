@@ -1,11 +1,8 @@
 
-                    var x,y:integer;
-                    procedure main();
-                    begin 
-                    x := 1;
-                    y := 2;
-                    if (true)
-                    then putInt(x);
-                    else putInt(y);  
-                    end
-                    
+        procedure main();
+        begin
+            putFloatLn(----------3.14e10);
+            putIntLn(0 div 1);
+            putFloat(-0 / -1);
+        end
+		

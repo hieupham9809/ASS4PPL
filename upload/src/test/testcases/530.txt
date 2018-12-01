@@ -1,12 +1,8 @@
 
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    with a: integer; do 
-                        begin
-                            a := 1;
-                            putInt(a);
-                        end
-                    end
-                    
+        var a : integer;
+        procedure main();
+        begin
+            a := -4;
+            putBool((a/8 - 3) < 0);
+        end
+        

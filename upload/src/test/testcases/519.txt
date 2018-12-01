@@ -1,7 +1,10 @@
 
-                    var x:integer;
-                    procedure main();
-                    begin 
-                    x := 4;
-                    putInt(x);  end
-                    
+        procedure main();
+        begin
+            putFloatLn(1/1);
+            putFloatLn(1./1);
+            putFloatLn(1/1.);
+            putFloatLn(1./1.);
+            putFloat(1./1. - 1/1);
+        end
+		

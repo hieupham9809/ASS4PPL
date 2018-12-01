@@ -60,6 +60,7 @@ class Emitter():
                 return self.jvm.emitBIPUSH(i)
             elif i >= -32768 and i <= 32767:
                 return self.jvm.emitSIPUSH(i)
+            else: return self.jvm.emitLDC(str(i))
         elif type(in_) is str:
             if in_ == "true":
                 return self.emitPUSHICONST(1, frame)
@@ -161,7 +162,9 @@ class Emitter():
             return self.jvm.emitILOAD(index)
         elif type(inType) is FloatType:
             return self.jvm.emitFLOAD(index)
-        elif type(inType) is cgen.ArrayPointerType or type(inType) is cgen.ClassType or type(inType) is StringType:
+        elif type(inType) is BoolType:
+            return self.jvm.emitILOAD(index)
+        elif type(inType) is cgen.ArrayPointerType or type(inType) is cgen.ClassType or type(inType) is StringType or type(inType) is ArrayType:
             return self.jvm.emitALOAD(index)
         else:
             raise IllegalOperandException(name)
@@ -195,7 +198,9 @@ class Emitter():
             return self.jvm.emitISTORE(index)
         elif type(inType) is FloatType:
             return self.jvm.emitFSTORE(index)
-        elif type(inType) is cgen.ArrayPointerType or type(inType) is cgen.ClassType or type(inType) is StringType or type(intType) is ArrayType:
+        elif type(inType) is BoolType:
+            return self.jvm.emitISTORE(index)
+        elif type(inType) is cgen.ArrayPointerType or type(inType) is cgen.ClassType or type(inType) is StringType :
             return self.jvm.emitASTORE(index)
         else:
             raise IllegalOperandException(name)
@@ -208,9 +213,16 @@ class Emitter():
         #typ: Type
         #frame: Frame
         #..., value -> ...
-
+        if type(typ) is IntType:
+            return self.jvm.emitIASTORE()
+        elif type(typ) is FloatType:
+            return self.jvm.emitFASTORE()
+        elif type(typ) is BoolType:
+            return self.jvm.emitBASTORE()
+        elif type(typ) is ArrayType:
+            return self.jvm.emitAASTORE()
         #frame.push()
-        raise IllegalOperandException(name)
+        else: raise IllegalOperandException(name)
 
     ''' generate the field (static) directive for a class mutable or immutable attribute.
     *   @param lexeme the name of the attribute.
@@ -459,24 +471,34 @@ class Emitter():
 
         frame.pop()
         frame.pop()
-        if op == ">":
-            result.append(self.jvm.emitIFICMPLE(labelF))
-        elif op == ">=":
-            result.append(self.jvm.emitIFICMPLT(labelF))
-        elif op == "<":
-            result.append(self.jvm.emitIFICMPGE(labelF))
-        elif op == "<=":
-            result.append(self.jvm.emitIFICMPGT(labelF))
-        elif op == "=":
-            result.append(self.jvm.emitIFICMPNE(labelF))
-        elif op == "<>":
-            result.append(self.jvm.emitIFICMPEQ(labelF))
-        result.append(self.emitPUSHCONST("1", IntType(), frame))
-        frame.pop()
-        result.append(self.emitGOTO(labelO, frame))
-        result.append(self.emitLABEL(labelF, frame))
-        result.append(self.emitPUSHCONST("0", IntType(), frame))
-        result.append(self.emitLABEL(labelO, frame))
+        if type(in_) is FloatType:
+            result.append(self.jvm.emitFCMPL())
+            if op == ">":
+                result.append(self.jvm.emitIFLE(labelF))
+            elif op == ">=":
+                result.append(self.jvm.emitIFLT(labelF))
+            elif op == "<":
+                result.append(self.jvm.emit)
+        else:
+            if op == ">":
+                result.append(self.jvm.emitIFICMPLE(labelF))
+            elif op == ">=":
+                result.append(self.jvm.emitIFICMPLT(labelF))
+            elif op == "<":
+                result.append(self.jvm.emitIFICMPGE(labelF))
+            elif op == "<=":
+                result.append(self.jvm.emitIFICMPGT(labelF))
+            elif op == "=":
+                result.append(self.jvm.emitIFICMPNE(labelF))
+            elif op == "<>":
+                result.append(self.jvm.emitIFICMPEQ(labelF))
+            result.append(self.emitPUSHCONST("1", IntType(), frame))
+            #frame.pop()
+            result.append(self.emitGOTO(labelO, frame))
+            result.append(self.emitLABEL(labelF, frame))
+            result.append(self.emitPUSHCONST("0", IntType(), frame))
+            result.append(self.emitLABEL(labelO, frame))
+        #frame.pop()
         return ''.join(result)
 
     def emitRELOP(self, op, in_, trueLabel, falseLabel, frame):
@@ -620,6 +642,12 @@ class Emitter():
         #in_: Type
         #frame: Frame
         if type(in_) is StringType:
+            frame.pop()
+            return self.jvm.emitARETURN()
+        if type(in_) is BoolType:
+            frame.pop()
+            return self.jvm.emitIRETURN()
+        if type(in_) is ArrayType:
             frame.pop()
             return self.jvm.emitARETURN()
         if type(in_) is IntType:

@@ -1,7 +1,9 @@
 
-                    var x:real;
-                    procedure main();
-                    begin 
-                    x := 2.9;
-                    putFloat(x);  end
-                    
+        procedure main();
+        begin
+            putFloatLn(-2/5);
+            putIntLn((27 mod 8));
+            putIntLn(27 div -3);
+            putInt(-28 div -3);
+        end
+		

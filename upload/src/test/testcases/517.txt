@@ -1,7 +1,6 @@
 
-                    var x:real;
-                    procedure main();
-                    begin 
-                    x := 5;
-                    putFloat(x);  end
-                    
+        procedure main();
+        begin
+            putInt(1+1-2*3);
+        end
+		

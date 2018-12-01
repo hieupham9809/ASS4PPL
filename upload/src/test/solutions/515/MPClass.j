@@ -4,15 +4,37 @@
 
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
-.var 1 is x F from Label0 to Label1
+.var 1 is i I from Label0 to Label1
 Label0:
-	ldc 2.5
-	fstore_1
-	fload_1
-	invokestatic io/putFloat(F)V
+	iconst_0
+	istore_1
+Label2:
+	iconst_1
+	ifle Label3
+	iload_1
+	iconst_5
+	if_icmpne Label6
+	iconst_1
+	goto Label7
+Label6:
+	iconst_0
+Label7:
+	ifle Label4
+	goto Label3
+	goto Label5
+Label4:
+Label5:
+	iload_1
+	invokestatic io/putInt(I)V
+	iload_1
+	iconst_1
+	iadd
+	istore_1
+	goto Label2
+Label3:
 Label1:
 	return
-.limit stack 1
+.limit stack 5
 .limit locals 2
 .end method
 

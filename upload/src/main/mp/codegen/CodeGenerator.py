@@ -31,7 +31,19 @@ class CodeGenerator(Utils):
                     Symbol("putLn",MType(list(),VoidType()),CName(self.libName))
                     
                     ]
-
+        # return [Symbol("getint", MType(list(), IntType()), CName(self.libName)),
+        #             Symbol("putint", MType([IntType()], VoidType()), CName(self.libName)),
+        #             Symbol("putintln", MType([IntType()], VoidType()), CName(self.libName)),
+        #             Symbol("getfloat",MType(list(),FloatType()), CName(self.libName)),
+        #             Symbol("putfloat",MType([FloatType()],VoidType()),CName(self.libName)),
+        #             Symbol("putfloatln",MType([FloatType()],VoidType()),CName(self.libName)),
+        #             Symbol("putbool",MType([BoolType()],VoidType()),CName(self.libName)),
+        #             Symbol("putboolln",MType([BoolType()],VoidType()),CName(self.libName)),
+        #             Symbol("putstring",MType([StringType()],VoidType()),CName(self.libName)),
+        #             Symbol("putstringln",MType([StringType()],VoidType()),CName(self.libName)),
+        #             Symbol("putln",MType(list(),VoidType()),CName(self.libName))
+                    
+        #             ]
     def gen(self, ast, dir_):
         #ast: AST
         #dir_: String
@@ -125,8 +137,10 @@ class CodeGenVisitor(BaseVisitor, Utils):
         for x in ast.decl:
             if type(x) is FuncDecl:
                 paramTypeList = [y.varType for y in x.param]
-                stDecl = [Symbol(x.name.name,MType(paramTypeList,x.returnType),CName(self.className))] + stDecl
+                stDecl = [Symbol(x.name.name.lower(),MType(paramTypeList,x.returnType),CName(self.className))] + stDecl
             else:
+                
+
                 newSym = self.visit(x,SubBody(Frame("<clinit>",x.varType),list(),isGlobal=True))
                 stDecl = [newSym] + stDecl
         e = SubBody(None, stDecl)
@@ -142,19 +156,38 @@ class CodeGenVisitor(BaseVisitor, Utils):
         #frame: Frame
 
         isInit = consdecl.returnType is None
-        isMain = consdecl.name.name == "main" and len(consdecl.param) == 0 and type(consdecl.returnType) is VoidType
+        isMain = consdecl.name.name.lower() == "main" and len(consdecl.param) == 0 and type(consdecl.returnType) is VoidType
         returnType = VoidType() if isInit else consdecl.returnType
-        methodName = "<init>" if isInit else consdecl.name.name
-        intype = [ArrayPointerType(StringType())] if isMain else list()
+        methodName = "<init>" if isInit else consdecl.name.name.lower()
+        intype = [ArrayPointerType(StringType())] if isMain else [x.varType for x in consdecl.param]
         mtype = MType(intype, returnType)
 
-        self.emit.printout(self.emit.emitMETHOD(methodName, mtype, not isInit, frame))
+        self.emit.printout(self.emit.emitMETHOD(methodName.lower(), mtype, not isInit, frame))
 
         frame.enterScope(True)
 
         glenv = o
 
         # Generate code for parameter declarations
+        # frameInit = Frame("<clinit>",VoidType)
+        # self.emit.printout(self.emit.emitMETHOD("<clinit>", MType(list(),VoidType()), False, frameInit))
+        # frameInit.enterScope(True)
+        # self.emit.printout(self.emit.emitVAR(frameInit.getNewIndex(), "this", ClassType(self.className), frameInit.getStartLabel(), frameInit.getEndLabel(), frameInit))
+        # self.emit.printout(self.emit.emitLABEL(frameInit.getStartLabel(), frameInit))
+        # self.emit.printout(self.emit.emitREADVAR("this", ClassType(self.className), 0, frameInit))
+        # self.emit.printout(self.emit.emitINVOKESPECIAL(frameInit))
+        
+        # self.emit.printout(self.emit.emitREADVAR("this",ClassType(self.className), 0, frameInit))
+        # self.emit.printout(self.emit.emitPUSHICONST(arraySize,frame))
+        # self.emit.printout(self.emit.jvm.emitNEWARRAY(self.emit.getFullType(eleType)))
+        # self.emit.printout(self.emit.emitPUTSTATIC(self.className + "." + o[1],ast,frame))
+        
+        
+        # self.emit.printout(self.emit.emitLABEL(frameInit.getEndLabel(), frameInit))
+        # self.emit.printout(self.emit.emitRETURN(VoidType(), frameInit))
+        # self.emit.printout(self.emit.emitENDMETHOD(frameInit))
+        # frameInit.exitScope()
+
         if isInit:
             self.emit.printout(self.emit.emitVAR(frame.getNewIndex(), "this", ClassType(self.className), frame.getStartLabel(), frame.getEndLabel(), frame))
         if isMain:
@@ -166,7 +199,7 @@ class CodeGenVisitor(BaseVisitor, Utils):
 
         body = consdecl.body
         self.emit.printout(self.emit.emitLABEL(frame.getStartLabel(), frame))
-
+        
         # Generate code for statements
         if isInit:
             self.emit.printout(self.emit.emitREADVAR("this", ClassType(self.className), 0, frame))
@@ -189,7 +222,7 @@ class CodeGenVisitor(BaseVisitor, Utils):
         return SubBody(None, [Symbol(ast.name, MType(list(), ast.returnType), CName(self.className))] + subctxt.sym)
 
     def visitVarDecl(self, ast, o):
-        varName = ast.variable.name
+        varName = ast.variable.name.lower()
         varType = ast.varType
         frame = o.frame
         subctxt = o
@@ -255,19 +288,19 @@ class CodeGenVisitor(BaseVisitor, Utils):
         else:
             return operandCode + self.emit.emitNEGOP(operandType,frame), operandType
 
-    def visitId(self,ast,o):
-        accessCtxt = o
-        frame = accessCtxt.frame
-        symList = accessCtxt.sym
-        isLeft = accessCtxt.isLeft
-        isFirst = accessCtxt.isFirst
+    # def visitId(self,ast,o):
+    #     accessCtxt = o
+    #     frame = accessCtxt.frame
+    #     symList = accessCtxt.sym
+    #     isLeft = accessCtxt.isLeft
+    #     isFirst = accessCtxt.isFirst
 
-        sym = self.lookup(ast.name.lower(),symList, lambda x: x.name.lower())
-        if isLeft:
-            return sym.name, sym.mtype, sym.value
-        if sym.value is None: #global var
-            return self.emit.emitGETSTATIC(self.className + "." + sym.name,sym.mtype, frame), sym.mtype
-        return self.emit.emitREADVAR(sym.name, sym.mtype, sym.value.value, frame), sym.mtype
+    #     sym = self.lookup(ast.name.lower(),symList, lambda x: x.name.lower())
+    #     if isLeft:
+    #         return sym.name, sym.mtype, sym.value
+    #     if sym.value is None: #global var
+    #         return self.emit.emitGETSTATIC(self.className + "." + sym.name,sym.mtype, frame), sym.mtype
+    #     return self.emit.emitREADVAR(sym.name, sym.mtype, sym.value.value, frame), sym.mtype
         
 
 
@@ -306,41 +339,44 @@ class CodeGenVisitor(BaseVisitor, Utils):
         ctxt = o
         frame = ctxt.frame
         nenv = ctxt.sym
-        sym = self.lookup(ast.method.name, nenv, lambda x: x.name)
+       
+        sym = self.lookup(ast.method.name.lower(), nenv, lambda x: x.name.lower())
         cname = sym.value.value
     
         ctype = sym.mtype
 
-        in_ = ("", list())
+        in_ = ("", [])
         for x in ast.param:
             str1, typ1 = self.visit(x, Access(frame, nenv, False, True))
-            in_ = (in_[0] + str1, in_[1].append(typ1))
+            in_ = (in_[0] + str1, in_[1]+[typ1])
         self.emit.printout(in_[0])
-        self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
-    def visitAssign(self,ast,o):
-        subBodyCtxt = o
-        frame = subBodyCtxt.frame
-        sym = subBodyCtxt.sym 
-        writevar = ""
-        putstatic = ""
+        #self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name.lower(), ctype, frame))
+        self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + sym.name, ctype, frame))
 
-        result = list()
-        lhsName, lhsType, lhsValue = self.visit(ast.lhs,Access(frame, sym, True, True))
-        rhsCode, rhsType = self.visit(ast.exp,Access(frame, sym, False, True))
-        if (type(rhsType), type(lhsType)) == (IntType,FloatType):
-            rhsCode = rhsCode + self.emit.emitI2F(frame)
-        self.emit.printout(rhsCode)
-        result.append(rhsCode)
+    # def visitAssign(self,ast,o):
+    #     subBodyCtxt = o
+    #     frame = subBodyCtxt.frame
+    #     sym = subBodyCtxt.sym 
+    #     writevar = ""
+    #     putstatic = ""
 
-        if lhsValue:
-            writevar = self.emit.emitWRITEVAR(lhsName,lhsType,lhsValue.value,frame)
-            result.append(writevar)
-            self.emit.printout(writevar)
-        else:
-            result.append(putstatic)
-            putstatic = self.emit.emitPUTSTATIC(self.className + "." + lhsName,lhsType,frame)
-            self.emit.printout(putstatic)
-        return ''.join(result)
+    #     result = list()
+    #     lhsName, lhsType, lhsValue = self.visit(ast.lhs,Access(frame, sym, True, True))
+    #     rhsCode, rhsType = self.visit(ast.exp,Access(frame, sym, False, True))
+    #     if (type(rhsType), type(lhsType)) == (IntType,FloatType):
+    #         rhsCode = rhsCode + self.emit.emitI2F(frame)
+    #     self.emit.printout(rhsCode)
+    #     result.append(rhsCode)
+
+    #     if lhsValue:
+    #         writevar = self.emit.emitWRITEVAR(lhsName,lhsType,lhsValue.value,frame)
+    #         result.append(writevar)
+    #         self.emit.printout(writevar)
+    #     else:
+    #         result.append(putstatic)
+    #         putstatic = self.emit.emitPUTSTATIC(self.className + "." + lhsName,lhsType,frame)
+    #         self.emit.printout(putstatic)
+    #     return ''.join(result)
 
 
     def visitIf(self,ast,o):
@@ -440,11 +476,13 @@ class CodeGenVisitor(BaseVisitor, Utils):
         subBodyCtxt = o
         frame = subBodyCtxt.frame
         sym = subBodyCtxt.sym
-        expr = self.visit(ast.expr,Access(frame,sym,False,True))
+        expr = None
         if ast.expr:
+            expr = self.visit(ast.expr,Access(frame,sym,False,True))
             self.emit.printout(expr[0])
-        
-        self.emit.printout(self.emit.emitRETURN(expr[1],frame))
+            self.emit.printout(self.emit.emitRETURN(expr[1],frame))
+        else:
+            self.emit.printout(self.emit.emitRETURN(VoidType(),frame))
     def visitCallExpr(self,ast,o):
         #ast: CallStmt
         #o: Any
@@ -452,17 +490,19 @@ class CodeGenVisitor(BaseVisitor, Utils):
         ctxt = o
         frame = ctxt.frame
         nenv = ctxt.sym
-        sym = self.lookup(ast.method.name, nenv, lambda x: x.name)
+        sym = self.lookup(ast.method.name.lower(), nenv, lambda x: x.name)
         cname = sym.value.value
     
         ctype = sym.mtype
 
-        in_ = ("", list())
+        in_ = ("", [])
         for x in ast.param:
             str1, typ1 = self.visit(x, Access(frame, nenv, False, True))
-            in_ = (in_[0] + str1, in_[1].append(typ1))
+            in_ = (in_[0] + str1, in_[1]+[typ1])
+            
         result.append(in_[0])
-        result.append(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name, ctype, frame))
+        #result.append(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name.lower(), ctype, frame))
+        result.append(self.emit.emitINVOKESTATIC(cname + "/" + sym.name, ctype, frame))        
         return ''.join(result),ctype.rettype
 
 
@@ -471,19 +511,95 @@ class CodeGenVisitor(BaseVisitor, Utils):
         upper = ast.upper
         arraySize = upper - lower + 1
         eleType = ast.eleType
-
         frame = o[0].frame
         label1 = frame.getNewLabel()
         label2 = frame.getNewLabel()
-        print(frame)
-        self.emit.printout(self.emit.emitLABEL(label1,frame))
+
+        #if type(x.varType) == ArrayType:
+        frameInit = Frame("<clinit>",VoidType)
+        self.emit.printout(self.emit.emitMETHOD("<clinit>", MType(list(),VoidType()), False, frameInit))
+        #frameInit.enterScope(True)
+        #self.emit.printout(self.emit.emitVAR(frameInit.getNewIndex(), "this", ClassType(self.className), frameInit.getStartLabel(), frameInit.getEndLabel(), frameInit))
+        #self.emit.printout(self.emit.emitLABEL(frameInit.getStartLabel(), frameInit))
+        #self.emit.printout(self.emit.emitREADVAR("this", ClassType(self.className), 0, frameInit))
+        #self.emit.printout(self.emit.emitINVOKESPECIAL(frameInit))
+        
+        #self.emit.printout(self.emit.emitREADVAR("this",ClassType(self.className), 0, frameInit))
         self.emit.printout(self.emit.emitPUSHICONST(arraySize,frame))
         self.emit.printout(self.emit.jvm.emitNEWARRAY(self.emit.getFullType(eleType)))
-        
         self.emit.printout(self.emit.emitPUTSTATIC(self.className + "." + o[1],ast,frame))
-        self.emit.printout(self.emit.emitLABEL(label2,frame))
+        
+        
+        #self.emit.printout(self.emit.emitLABEL(frameInit.getEndLabel(), frameInit))
+        self.emit.printout(self.emit.emitRETURN(VoidType(), frameInit))
+        self.emit.printout(self.emit.emitENDMETHOD(frameInit))
+        #frameInit.exitScope();
 
+        
+        #self.emit.printout(self.emit.emitLABEL(label1,frame))
+        
+        #self.emit.printout(self.emit.emitLABEL(label2,frame))
+    def visitId(self,ast,o):
+        accessCtxt = o
+        frame = accessCtxt.frame
+        symList = accessCtxt.sym
+        isLeft = accessCtxt.isLeft
+        isFirst = accessCtxt.isFirst
+
+        sym = self.lookup(ast.name.lower(),symList, lambda x: x.name)
+        if isLeft:
+            return sym.name.lower(), sym.mtype, sym.value
+        if sym.value is None: #global var
+            return self.emit.emitGETSTATIC(self.className + "." + sym.name.lower(),sym.mtype, frame), sym.mtype
+        return self.emit.emitREADVAR(sym.name.lower(), sym.mtype, sym.value.value, frame), sym.mtype
+    def visitAssign(self,ast,o):
+        subBodyCtxt = o
+        frame = subBodyCtxt.frame
+        sym = subBodyCtxt.sym 
+        writevar = ""
+        putstatic = ""
+
+        result = list()
+        
+        lhsName, lhsType, lhsValue = self.visit(ast.lhs,Access(frame, sym, True, True))
+        if type(lhsType) == ArrayType:
+            arrCode,indexCode = self.visit(ast.lhs,Access(frame,sym,False,False))
+            self.emit.printout(arrCode + indexCode)
+        rhsCode, rhsType = self.visit(ast.exp,Access(frame, sym, False, True))
+        if (type(rhsType), type(lhsType)) == (IntType,FloatType):
+            rhsCode = rhsCode + self.emit.emitI2F(frame)
+        self.emit.printout(rhsCode)
+        result.append(rhsCode)
+
+        if lhsValue:
+            writevar = ""
+            if type(lhsType) == ArrayType:
+                writevar = self.emit.emitWRITEVAR2(lhsName,lhsType.eleType,frame)
+            else: writevar = self.emit.emitWRITEVAR(lhsName,lhsType,lhsValue.value,frame)
+
+            result.append(writevar)
+            self.emit.printout(writevar)
+        else:
+            result.append(putstatic)
+            putstatic = ""
+            if type(lhsType) == ArrayType:
+                putstatic = self.emit.emitWRITEVAR2(lhsName,lhsType.eleType,frame)
+            else:   putstatic = self.emit.emitPUTSTATIC(self.className + "." + lhsName,lhsType,frame)
+            
+            self.emit.printout(putstatic)
+        
+        return ''.join(result)
     def visitArrayCell(self,ast,o):
+        accessCtxt = o
+        frame = accessCtxt.frame
+        sym = accessCtxt.sym
         
+        if accessCtxt.isFirst:
+            return self.visit(ast.arr,Access(frame,sym,True,True))
+        else: 
+            arrCode, arrType = self.visit(ast.arr,Access(frame,sym,False,True))
+            indexCode, indexType = self.visit(ast.idx,Access(frame,sym,False,False))
+            return arrCode,indexCode
         
+
 

@@ -1,7 +1,13 @@
 
-                    procedure main();
-                    var x:real;
-                    begin 
-                    x := 2.5;
-                    putFloat(x);  end
-                    
+        procedure main();
+        var i:integer;
+        begin
+            i := 0;
+            while true do
+            begin
+                if i = 5 then break;
+                putInt(i);
+                i := i + 1;
+            end
+        end
+		

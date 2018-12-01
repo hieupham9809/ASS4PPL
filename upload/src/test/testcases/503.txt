@@ -1,7 +1,9 @@
 
-                    procedure foo();
-                    begin end
-                    procedure main(); 
-                    var x: real;
-                    begin putInt(3);end
-                    
+        procedure main();
+        begin
+            if false then
+                putBool(true);
+            else
+                putBool(false);
+        end
+        

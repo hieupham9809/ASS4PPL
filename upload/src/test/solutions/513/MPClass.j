@@ -1,18 +1,23 @@
 .source MPClass.java
 .class public MPClass
 .super java.lang.Object
-.field static a I
-.field static b I
+.field static a [I
+
+.method public <clinit>()V
+	iconst_5
+	newarray int
+	putstatic MPClass.a [I
+	return
+.limit stack 0
+.limit locals 0
+.end method
 
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
 Label0:
-	ldc 1.5
-	fneg
-	invokestatic io/putFloat(F)V
 Label1:
 	return
-.limit stack 1
+.limit stack 0
 .limit locals 1
 .end method
 

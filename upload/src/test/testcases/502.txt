@@ -1,1 +1,9 @@
-procedure main(); begin putFloat(1.2); end
+
+        procedure main();
+        begin
+            if true then
+                putBool(true);
+            else
+                putBool(false);
+        end
+        

@@ -1,7 +1,12 @@
 
-                    procedure main();
-                    var x:integer;
-                    begin 
-                    x := 2;
-                    putInt(x);  end
-                    
+        procedure main();
+        var i:integer;
+        begin
+            i := 0;
+            while i < 5 do
+            begin
+                putInt(i);
+                i := i + 1;
+            end
+        end
+		

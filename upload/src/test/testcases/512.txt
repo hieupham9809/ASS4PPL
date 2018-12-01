@@ -1,4 +1,35 @@
-var a,b:integer;
-                    procedure main();
-                    begin putInt(-1);  end
-                    
+
+        procedure hello(x: array [-2 .. 2] of string);
+        var i:integer;
+        begin
+            for i := -2 to 2 do
+                x[i] := "HELLO";
+        end
+
+        procedure goodbye(x: array [-2 .. 2] of string);
+        var i:integer;
+        begin
+            for i := -2 to 2 do
+                x[i] := "GOODBYE";
+        end
+
+        procedure printArray(a : array [-2 .. 2] of string);
+        var i:integer;
+        begin
+            for i := -2 to 2 do
+                putStringLn(a[i]);
+        end
+
+		procedure main();
+        var arr : array[-2 .. 2] of string;
+        i:integer;
+		begin
+            // Init array
+            for i := -2 to 2 do
+                arr[i] := "HI"; 
+            hello(arr);
+            printArray(arr);
+            goodbye(arr);
+            printArray(arr);
+		end
+		

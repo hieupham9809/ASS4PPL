@@ -1,1 +1,13 @@
-Program([FuncDecl(Id(main),[],VoidType(),[],[CallStmt(Id(putInt),[IntLiteral(5)])])])
+
+        var i:integer;
+        procedure main();
+        begin
+            i := 1;
+            with i:integer; do
+            begin
+                i := 2;
+                putInt(i);
+            end
+            putInt(i);
+        end
+        

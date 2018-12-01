@@ -1,4 +1,12 @@
-var y:integer;z:string;
-                    procedure main(); var x: real;
-                    begin putInt(5+3);  end
-                    
+
+        var i:integer;
+        procedure main();
+        var x:integer;
+        begin
+            x := 0;
+            for x:=1 to 3 do
+            begin
+                putInt(x);
+            end
+        end
+        

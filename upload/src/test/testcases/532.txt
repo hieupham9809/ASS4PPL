@@ -1,16 +1,11 @@
 
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    z := 1;
-                    for x:=1 to 4 do
-                        begin
-                            with z: integer; do 
-                                begin
-                                    z := 4;
-                                    putInt(z);
-                                end
-                        end
-                    end
-                    
+        var a : array [-100 .. 100] of real;
+        procedure main();
+        begin
+            a[99] := 1;
+            a[-99] := -1;
+            putBool(1234567 = 1234567);
+            putBool(a[99] + a[-99] = 0.0*2e10);
+            putFloat(a[99]*a[99]-a[-99]-2);
+        end
+        

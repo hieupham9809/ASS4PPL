@@ -1,4 +1,11 @@
-var y:integer;z:string;
-                    procedure main(); var x: real;
-                    begin putInt(5-3);  end
-                    
+
+        var a:array[-1 .. 1] of integer;
+        var b:array[3 .. 5] of real;
+        procedure main();
+        begin
+            a[0] := 1;
+            b[4] := 2.0;
+            putInt(a[0]);
+            putFloat(b[4]);
+        end
+        

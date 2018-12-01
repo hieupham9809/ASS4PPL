@@ -1,4 +1,9 @@
-var y:integer;z:string;
-                    procedure main(); var x: real;
-                    begin putInt(5*3);  end
-                    
+
+		procedure main();
+		var x: array [1 .. 5] of integer;
+		begin
+			x[2] := 3;
+			putInt(x[2]);
+			return;
+		end
+		

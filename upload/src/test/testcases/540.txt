@@ -1,8 +1,7 @@
 
-                    procedure main();
-                    var x: string;
-                    begin 
-                    x := "abc";
-                    putString(x);
-                    end
-                    
+        procedure main();
+        begin
+            if true then
+                putString("TRUE");
+        end
+        

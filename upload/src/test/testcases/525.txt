@@ -1,17 +1,9 @@
 
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    x := 1;
-                    while(x < 4)
-                    do 
-                    begin
-                        x := x + 1;
-                        if (x <> 2) then
-                            break;
-                            
-                    end
-                    putInt(x); 
-                    end
-                    
+        procedure main();
+        begin
+            putBool(true and false);
+            putBool(true and true);
+            putBool(false and true);
+            putBool(false and false);
+        end
+		

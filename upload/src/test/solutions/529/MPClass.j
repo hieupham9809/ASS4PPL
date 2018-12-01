@@ -1,43 +1,80 @@
 .source MPClass.java
 .class public MPClass
 .super java.lang.Object
-.field static x I
-.field static y I
 
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
-.var 1 is z I from Label0 to Label1
 Label0:
 	iconst_1
-	istore_1
-	iconst_5
-	putstatic MPClass.x I
-Label2:
-	getstatic MPClass.x I
 	iconst_1
-	if_icmplt Label4
+	isub
+	iconst_0
+	if_icmpne Label2
+	iconst_1
+	goto Label3
+Label2:
+	iconst_0
+Label3:
+	invokestatic io/putBool(Z)V
+	iconst_1
+	iconst_2
+	if_icmple Label4
 	iconst_1
 	goto Label5
 Label4:
 	iconst_0
 Label5:
-	ifle Label3
-	iload_1
+	ifgt Label6
 	iconst_1
-	iadd
-	istore_1
-	getstatic MPClass.x I
+	goto Label7
+Label6:
+	iconst_0
+Label7:
+	invokestatic io/putBool(Z)V
+	ldc 1.0
 	iconst_1
-	isub
-	putstatic MPClass.x I
-	goto Label2
-Label3:
-	iload_1
-	invokestatic io/putInt(I)V
+	i2f
+	fmul
+	iconst_1
+	i2f
+	iconst_1
+	i2f
+	fdiv
+	if_icmpeq Label8
+	iconst_1
+	goto Label9
+Label8:
+	iconst_0
+Label9:
+	invokestatic io/putBoolLn(Z)V
+	iconst_1
+	iconst_1
+	idiv
+	iconst_1
+	iconst_1
+	imul
+	if_icmpeq Label10
+	iconst_1
+	goto Label11
+Label10:
+	iconst_0
+Label11:
+	invokestatic io/putBoolLn(Z)V
+	ldc 1.0
+	iconst_1
+	i2f
+	fmul
+	invokestatic io/putFloatLn(F)V
+	iconst_1
+	i2f
+	iconst_1
+	i2f
+	fdiv
+	invokestatic io/putFloatLn(F)V
 Label1:
 	return
-.limit stack 5
-.limit locals 2
+.limit stack 13
+.limit locals 1
 .end method
 
 .method public <init>()V

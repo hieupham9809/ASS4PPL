@@ -1,13 +1,9 @@
 
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    z := 1;
-                    with z: integer; do 
-                        begin
-                            z := 4;
-                            putInt(z);
-                        end
-                    end
-                    
+        var a : integer;
+        procedure main();
+        begin
+            a := -4;
+            putBool(a = a);
+            putBool(a = a*1.);
+        end
+        

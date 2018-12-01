@@ -1,14 +1,11 @@
 
-                    var x,y:integer;
-                    procedure main();
-                    var z: integer;
-                    begin 
-                    z:=1;
-                    for x := 5 downto 1 do
-                        begin
-                         z := z + 1;
-                         {if (z = 3) then break;}
-                        end
-                    putInt(z); 
-                    end
-                    
+        procedure main();
+        begin
+            putBool(1-1 = 0);
+            putBool(not (1 > 2));
+            putBoolLn(1.*1 <> 1/1);
+            putBoolLn(1 div 1 <> 1*1);
+            putFloatLn(1.*1);
+            putFloatLn(1/1);
+        end
+		

@@ -1,14 +1,7 @@
 
-                    var j: integer;                    
-                    function foo():string;
-                    begin
-                        return "hehe";
-                    end
-                    procedure main();
-                    var x: string;
-                    begin 
-                    j := 2;
-                    x:= foo();
-                    putString(x);
-                    end
-                    
+        procedure main();
+        begin
+            if false then
+                putString("TRUE");
+        end
+        

@@ -1,4 +1,15 @@
-var a,b:integer;
-                    procedure main();
-                    begin putBool(not true);  end
-                    
+
+		procedure main();
+		begin
+            // same result as OR
+			putBoolLn(false or else false);
+            putBoolLn(false or else true);
+            putBoolLn(true or else true);
+            putBoolLn(true or else false);
+            // skip evaluation of the second operand --> no error
+            putBoolLn(true or else 0 div 0 = 0);
+            // error
+            // putBoolLn(true and then 0 div 0 = 0);
+			return;
+		end
+		

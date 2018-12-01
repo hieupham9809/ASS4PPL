@@ -1,25 +1,34 @@
 .source MPClass.java
 .class public MPClass
 .super java.lang.Object
-.field static x I
-.field static y I
 
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
 Label0:
+	ldc 31400000000.0
+	fneg
+	fneg
+	fneg
+	fneg
+	fneg
+	fneg
+	fneg
+	fneg
+	fneg
+	fneg
+	invokestatic io/putFloatLn(F)V
+	iconst_0
 	iconst_1
-	putstatic MPClass.x I
-	iconst_2
-	putstatic MPClass.y I
+	idiv
+	invokestatic io/putIntLn(I)V
+	iconst_0
+	ineg
+	i2f
 	iconst_1
-	ifle Label2
-	getstatic MPClass.x I
-	invokestatic io/putInt(I)V
-	goto Label3
-Label2:
-	getstatic MPClass.y I
-	invokestatic io/putInt(I)V
-Label3:
+	ineg
+	i2f
+	fdiv
+	invokestatic io/putFloat(F)V
 Label1:
 	return
 .limit stack 2

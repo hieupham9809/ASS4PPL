@@ -1,4 +1,11 @@
-var a,b:integer;
-                    procedure main();
-                    begin putBool(not false);  end
-                    
+
+        function foo():real;
+        begin
+            return 1;
+        end
+
+		procedure main();
+		begin
+            putFloat(foo());
+		end
+		

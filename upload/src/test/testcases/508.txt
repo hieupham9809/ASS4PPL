@@ -1,4 +1,15 @@
-var a,b:integer;
-                    procedure main();
-                    begin putInt(6 div 2);  end
-                    
+
+		procedure main();
+		begin
+            // same result as AND
+			putBoolLn(true and then false);
+            putBoolLn(true and then true);
+            putBoolLn(false and then true);
+            putBoolLn(false and then false);
+            // skip evaluation of the second operand --> no error
+            putBoolLn(false and then 0 div 0 = 0);
+            // error
+            // putBoolLn(true and then 0 div 0 = 0);
+			return;
+		end
+		
