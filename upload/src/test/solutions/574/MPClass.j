@@ -84,7 +84,7 @@ Label15:
 	invokestatic io/putBool(Z)V
 Label1:
 	return
-.limit stack 12
+.limit stack 16
 .limit locals 5
 .end method
 

@@ -17,7 +17,8 @@ Label3:
 	ldc 1.0
 	iconst_2
 	i2f
-	if_icmpge Label4
+	fcmpl
+	ifge Label4
 	iconst_1
 	goto Label5
 Label4:
@@ -28,7 +29,8 @@ Label5:
 	ineg
 	i2f
 	ldc 10.0
-	if_icmpgt Label6
+	fcmpl
+	ifgt Label6
 	iconst_1
 	goto Label7
 Label6:
@@ -37,7 +39,7 @@ Label7:
 	invokestatic io/putBool(Z)V
 Label1:
 	return
-.limit stack 7
+.limit stack 10
 .limit locals 1
 .end method
 

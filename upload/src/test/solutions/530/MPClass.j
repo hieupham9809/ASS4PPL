@@ -19,7 +19,8 @@ Label0:
 	fsub
 	iconst_0
 	i2f
-	if_icmpge Label2
+	fcmpl
+	ifge Label2
 	iconst_1
 	goto Label3
 Label2:
@@ -28,7 +29,7 @@ Label3:
 	invokestatic io/putBool(Z)V
 Label1:
 	return
-.limit stack 3
+.limit stack 4
 .limit locals 1
 .end method
 

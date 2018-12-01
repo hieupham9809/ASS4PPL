@@ -1,23 +1,55 @@
 .source MPClass.java
 .class public MPClass
 .super java.lang.Object
+.field static b [I
+
+.method public <clinit>()V
+	iconst_4
+	newarray int
+	putstatic MPClass.b [I
+	return
+.limit stack 1
+.limit locals 0
+.end method
 
 .method public static main([Ljava/lang/String;)V
 .var 0 is args [Ljava/lang/String; from Label0 to Label1
 Label0:
-	iconst_1
-	ifle Label2
+	getstatic MPClass.b [I
 	iconst_0
-	ifle Label2
-	iconst_1
-	goto Label3
-Label2:
 	iconst_0
-Label3:
-	invokestatic io/putBool(Z)V
+	iastore
+	getstatic MPClass.b [I
+	iconst_1
+	getstatic MPClass.b [I
+	iconst_0
+	iaload
+	iconst_1
+	iadd
+	iastore
+	getstatic MPClass.b [I
+	iconst_2
+	getstatic MPClass.b [I
+	iconst_1
+	iaload
+	iconst_1
+	iadd
+	iastore
+	getstatic MPClass.b [I
+	iconst_3
+	getstatic MPClass.b [I
+	iconst_2
+	iaload
+	iconst_1
+	iadd
+	iastore
+	getstatic MPClass.b [I
+	iconst_2
+	iaload
+	invokestatic io/putInt(I)V
 Label1:
 	return
-.limit stack 6
+.limit stack 14
 .limit locals 1
 .end method
 

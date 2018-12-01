@@ -24,7 +24,8 @@ Label3:
 	i2f
 	ldc 1.0
 	fmul
-	if_icmpne Label4
+	fcmpl
+	ifne Label4
 	iconst_1
 	goto Label5
 Label4:
@@ -33,7 +34,7 @@ Label5:
 	invokestatic io/putBool(Z)V
 Label1:
 	return
-.limit stack 5
+.limit stack 7
 .limit locals 1
 .end method
 

@@ -113,7 +113,11 @@ class Emitter():
         frame.pop()
         if type(in_) is IntType:
             return self.jvm.emitIALOAD()
-        elif type(in_) is cgen.ArrayPointerType or type(in_) is cgen.ClassType or type(in_) is StringType:
+        if type(in_) is FloatType:
+            return self.jvm.emitFALOAD()
+        if type(in_) is BoolType:
+            return self.jvm.emitBALOAD()
+        elif type(in_) is cgen.ArrayPointerType or type(in_) is cgen.ClassType or type(in_) is StringType or type(in_) is ArrayType:
             return self.jvm.emitAALOAD()
         else:
             raise IllegalOperandException(str(in_))
@@ -128,6 +132,10 @@ class Emitter():
         frame.pop()
         if type(in_) is IntType:
             return self.jvm.emitIASTORE()
+        elif type(in_) is FloatType:
+            return self.jvm.emitFASTORE()
+        elif type(in_) is BoolType:
+            return self.jvm.emitBASTORE()
         elif type(in_) is cgen.ArrayPointerType or type(in_) is cgen.ClassType or type(in_) is StringType:
             return self.jvm.emitAASTORE()
         else:
@@ -219,6 +227,8 @@ class Emitter():
             return self.jvm.emitFASTORE()
         elif type(typ) is BoolType:
             return self.jvm.emitBASTORE()
+        elif type(typ) is StringType:
+            return self.jvm.emitAASTORE()
         elif type(typ) is ArrayType:
             return self.jvm.emitAASTORE()
         #frame.push()
@@ -478,7 +488,13 @@ class Emitter():
             elif op == ">=":
                 result.append(self.jvm.emitIFLT(labelF))
             elif op == "<":
-                result.append(self.jvm.emit)
+                result.append(self.jvm.emitIFGE(labelF))
+            elif op == "<=":
+                result.append(self.jvm.emitIFGT(labelF))
+            elif op == "=":
+                result.append(self.jvm.emitIFNE(labelF))
+            elif op == "<>":
+                result.append(self.jvm.emitIFEQ(labelF))
         else:
             if op == ">":
                 result.append(self.jvm.emitIFICMPLE(labelF))
@@ -492,12 +508,12 @@ class Emitter():
                 result.append(self.jvm.emitIFICMPNE(labelF))
             elif op == "<>":
                 result.append(self.jvm.emitIFICMPEQ(labelF))
-            result.append(self.emitPUSHCONST("1", IntType(), frame))
-            #frame.pop()
-            result.append(self.emitGOTO(labelO, frame))
-            result.append(self.emitLABEL(labelF, frame))
-            result.append(self.emitPUSHCONST("0", IntType(), frame))
-            result.append(self.emitLABEL(labelO, frame))
+        result.append(self.emitPUSHCONST("1", IntType(), frame))
+        #frame.pop()
+        result.append(self.emitGOTO(labelO, frame))
+        result.append(self.emitLABEL(labelF, frame))
+        result.append(self.emitPUSHCONST("0", IntType(), frame))
+        result.append(self.emitLABEL(labelO, frame))
         #frame.pop()
         return ''.join(result)
 

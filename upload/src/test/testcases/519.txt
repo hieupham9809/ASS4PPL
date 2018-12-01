@@ -3,7 +3,7 @@
         begin
             putFloatLn(1/1);
             putFloatLn(1./1);
-            putFloatLn(1/1.);
+            putFloatLn(1/1.); 
             putFloatLn(1./1.);
             putFloat(1./1. - 1/1);
         end

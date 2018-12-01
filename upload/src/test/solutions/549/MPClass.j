@@ -8,7 +8,8 @@ Label0:
 	ldc 1.0
 	ldc 1.0
 	fneg
-	if_icmplt Label4
+	fcmpl
+	iflt Label4
 	iconst_1
 	goto Label5
 Label4:
@@ -24,7 +25,7 @@ Label3:
 	invokestatic io/putString(Ljava/lang/String;)V
 Label1:
 	return
-.limit stack 3
+.limit stack 4
 .limit locals 1
 .end method
 

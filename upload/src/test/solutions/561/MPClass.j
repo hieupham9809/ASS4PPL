@@ -17,7 +17,8 @@ Label0:
 Label2:
 	fload_1
 	fload_2
-	if_icmpeq Label4
+	fcmpl
+	ifeq Label4
 	iconst_1
 	goto Label5
 Label4:
@@ -43,7 +44,7 @@ Label3:
 	invokestatic io/putFloat(F)V
 Label1:
 	return
-.limit stack 4
+.limit stack 5
 .limit locals 3
 .end method
 

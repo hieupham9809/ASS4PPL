@@ -347,7 +347,7 @@ class CodeGenVisitor(BaseVisitor, Utils):
 
         in_ = ("", [])
         for x in ast.param:
-            str1, typ1 = self.visit(x, Access(frame, nenv, False, True))
+            str1, typ1 = self.visit(x, Access(frame, nenv, False, False))
             in_ = (in_[0] + str1, in_[1]+[typ1])
         self.emit.printout(in_[0])
         #self.emit.printout(self.emit.emitINVOKESTATIC(cname + "/" + ast.method.name.lower(), ctype, frame))
@@ -512,12 +512,13 @@ class CodeGenVisitor(BaseVisitor, Utils):
         arraySize = upper - lower + 1
         eleType = ast.eleType
         frame = o[0].frame
-        label1 = frame.getNewLabel()
-        label2 = frame.getNewLabel()
+        #label1 = frame.getNewLabel()
+        #label2 = frame.getNewLabel()
 
         #if type(x.varType) == ArrayType:
         frameInit = Frame("<clinit>",VoidType)
         self.emit.printout(self.emit.emitMETHOD("<clinit>", MType(list(),VoidType()), False, frameInit))
+        
         #frameInit.enterScope(True)
         #self.emit.printout(self.emit.emitVAR(frameInit.getNewIndex(), "this", ClassType(self.className), frameInit.getStartLabel(), frameInit.getEndLabel(), frameInit))
         #self.emit.printout(self.emit.emitLABEL(frameInit.getStartLabel(), frameInit))
@@ -525,9 +526,9 @@ class CodeGenVisitor(BaseVisitor, Utils):
         #self.emit.printout(self.emit.emitINVOKESPECIAL(frameInit))
         
         #self.emit.printout(self.emit.emitREADVAR("this",ClassType(self.className), 0, frameInit))
-        self.emit.printout(self.emit.emitPUSHICONST(arraySize,frame))
+        self.emit.printout(self.emit.emitPUSHICONST(arraySize,frameInit))
         self.emit.printout(self.emit.jvm.emitNEWARRAY(self.emit.getFullType(eleType)))
-        self.emit.printout(self.emit.emitPUTSTATIC(self.className + "." + o[1],ast,frame))
+        self.emit.printout(self.emit.emitPUTSTATIC(self.className + "." + o[1],ast,frameInit))
         
         
         #self.emit.printout(self.emit.emitLABEL(frameInit.getEndLabel(), frameInit))
@@ -563,9 +564,9 @@ class CodeGenVisitor(BaseVisitor, Utils):
         
         lhsName, lhsType, lhsValue = self.visit(ast.lhs,Access(frame, sym, True, True))
         if type(lhsType) == ArrayType:
-            arrCode,indexCode = self.visit(ast.lhs,Access(frame,sym,False,False))
-            self.emit.printout(arrCode + indexCode)
-        rhsCode, rhsType = self.visit(ast.exp,Access(frame, sym, False, True))
+            lhsCode,temp = self.visit(ast.lhs,Access(frame,sym,True,False))
+            self.emit.printout(lhsCode)
+        rhsCode, rhsType = self.visit(ast.exp,Access(frame, sym, False, False))
         if (type(rhsType), type(lhsType)) == (IntType,FloatType):
             rhsCode = rhsCode + self.emit.emitI2F(frame)
         self.emit.printout(rhsCode)
@@ -593,13 +594,25 @@ class CodeGenVisitor(BaseVisitor, Utils):
         accessCtxt = o
         frame = accessCtxt.frame
         sym = accessCtxt.sym
-        
+        lhsName, lhsType, lhsValue = self.visit(ast.arr,Access(frame,sym,True,True))
+        #arraySym = self.lookup()
+        if not accessCtxt.isLeft:
+            result = list()
+            
+            if lhsValue is None: #global var
+                result.append(self.emit.emitGETSTATIC(self.className + "." + lhsName,lhsType, frame))
+            else: result.append(self.emit.emitREADVAR(lhsName, lhsType, lhsValue.value, frame))
+            indexCode, indexType = self.visit(ast.idx,Access(frame,sym,False,False))
+            result.append(indexCode)
+            result.append(self.emit.emitALOAD(lhsType.eleType,frame))
+            return ''.join(result), lhsType.eleType
+
         if accessCtxt.isFirst:
-            return self.visit(ast.arr,Access(frame,sym,True,True))
+            return lhsName.lower(),lhsType,lhsValue
         else: 
             arrCode, arrType = self.visit(ast.arr,Access(frame,sym,False,True))
             indexCode, indexType = self.visit(ast.idx,Access(frame,sym,False,False))
-            return arrCode,indexCode
+            return arrCode+indexCode,arrType
         
 
 

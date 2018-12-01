@@ -29,7 +29,7 @@ Label2:
 	freturn
 Label3:
 Label1:
-.limit stack 4
+.limit stack 5
 .limit locals 1
 .end method
 

@@ -338,7 +338,7 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     begin
     #         putFloatLn(1/1);
     #         putFloatLn(1./1);
-    #         putFloatLn(1/1.);
+    #         putFloatLn(1/1.); 
     #         putFloatLn(1./1.);
     #         putFloat(1./1. - 1/1);
     #     end
@@ -454,18 +454,17 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     expect = "falsetruetrue"
     #     self.assertTrue(TestCodeGen.test(input, expect, 527))
 
-    def test_exp_528(self):
-        input = """
-        procedure main();
-        begin
-            {putBool(-5.0 >= -5.);}
-            putBool(-5.0 >= -5.);
-            {putBool(1. = 1);
-            putBool(0.0 <> 0);}
-        end
-		"""
-        expect = "truetruefalse"
-        self.assertTrue(TestCodeGen.test(input, expect, 528))
+    # def test_exp_528(self):
+    #     input = """
+    #     procedure main();
+    #     begin
+    #         putBool(-5.0 >= -5.);
+    #         putBool(1. = 1);
+    #         putBool(0.0 <> 0);
+    #     end
+	# 	"""
+    #     expect = "truetruefalse"
+    #     self.assertTrue(TestCodeGen.test(input, expect, 528))
 
     # def test_exp_529(self):
     #     input = """
@@ -524,19 +523,19 @@ class CheckCodeGenSuite(unittest.TestCase):
 
     # def test_exp_533(self):
     #     input = """
-    #     var a : array [-100 .. 100] of real;
-    #     b : array[0 .. 3] of integer;
+    #     {var a : array [-100 .. 100] of real;}
+    #     var b : array[0 .. 3] of integer;
     #     procedure main();
     #     begin
     #         b[0] := 0;
     #         b[1] := b[0] + 1;
     #         b[2] := b[1] + 1;
     #         b[3] := b[2] + 1;
-    #         a[b[b[1]]] := b[b[0]] + 666;
-    #         putFloat(a[1]);
+    #         {a[b[b[1]]] := b[b[0]] + 666;}
+    #         putInt(b[2]);
     #     end
     #     """
-    #     expect = "666.0"
+    #     expect = "2"
     #     self.assertTrue(TestCodeGen.test(input, expect, 533))
 
     # def test_exp_534(self):
@@ -919,20 +918,20 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     expect = "0.0\n0.0\n0.0\n0\n"
     #     self.assertTrue(TestCodeGen.test(input, expect, 551))
 
-    # def test_assign_552(self):
-    #     input = """
-    #     var a:array [-3 .. 3] of boolean;
+    def test_assign_552(self):
+        input = """
+        var a:array [-3 .. 3] of boolean;
 
-    #     procedure main();
-    #     begin
-    #         a[-3] := A[3] := true;
-    #         a[-2] := not a[-3];
-    #         putBool(A[-3]);
-    #         putBool(A[-2]);
-    #     end
-    #     """
-    #     expect = "truefalse"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 552))
+        procedure main();
+        begin
+            a[-3] := A[3] := true;
+            a[-2] := not a[-3];
+            putBool(A[-3]);
+            putBool(A[-2]);
+        end
+        """
+        expect = "truefalse"
+        self.assertTrue(TestCodeGen.test(input, expect, 552))
         
     # def test_assign_553(self):
     #     input = """
@@ -1636,31 +1635,31 @@ class CheckCodeGenSuite(unittest.TestCase):
     #     expect = "00000"
     #     self.assertTrue(TestCodeGen.test(input, expect, 592))
 
-    # def test_call_593(self):
-    #     input = """
-    #     function newArray():array [-1 .. 1] of boolean;
-    #     var a:array [-1 .. 1] of boolean;
-    #     begin
-    #         a[-1] := a[1] := true;
-    #         a[0] := not a[-1];
-    #         return a;
-    #     end
+    def test_call_593(self):
+        input = """
+        function newArray():array [-1 .. 1] of boolean;
+        var a:array [-1 .. 1] of boolean;
+        begin
+            a[-1] := a[1] := true;
+            a[0] := not a[-1];
+            return a;
+        end
 
-    #     procedure printArray(a: array [-1 .. 1] of boolean);
-    #     begin
-    #         with i:integer; do
-    #             for i:= -1 to 1 do
-    #                 putBoolLn(a[i]);
-    #     end
+        procedure printArray(a: array [-1 .. 1] of boolean);
+        begin
+            with i:integer; do
+                for i:= -1 to 1 do
+                    putBoolLn(a[i]);
+        end
 
-    #     procedure main();
-    #     begin
-    #         putBoolLn(newArray()[0]);
-    #         printArray(newArray());
-    #     end
-    #     """
-    #     expect = "false\ntrue\nfalse\ntrue\n"
-    #     self.assertTrue(TestCodeGen.test(input, expect, 593))
+        procedure main();
+        begin
+            putBoolLn(newArray()[0]);
+            printArray(newArray());
+        end
+        """
+        expect = "false\ntrue\nfalse\ntrue\n"
+        self.assertTrue(TestCodeGen.test(input, expect, 593))
 
     # def test_call_594(self):
     #     input = """

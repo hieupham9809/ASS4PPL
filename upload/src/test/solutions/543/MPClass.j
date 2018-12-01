@@ -23,7 +23,7 @@ Label2:
 	ireturn
 Label3:
 Label1:
-.limit stack 3
+.limit stack 4
 .limit locals 1
 .end method
 

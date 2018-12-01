@@ -8,7 +8,7 @@
 	newarray int
 	putstatic MPClass.a [I
 	return
-.limit stack 0
+.limit stack 1
 .limit locals 0
 .end method
 

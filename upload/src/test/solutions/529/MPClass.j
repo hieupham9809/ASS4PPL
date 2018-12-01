@@ -40,7 +40,8 @@ Label7:
 	iconst_1
 	i2f
 	fdiv
-	if_icmpeq Label8
+	fcmpl
+	ifeq Label8
 	iconst_1
 	goto Label9
 Label8:
@@ -73,7 +74,7 @@ Label11:
 	invokestatic io/putFloatLn(F)V
 Label1:
 	return
-.limit stack 13
+.limit stack 17
 .limit locals 1
 .end method
 
